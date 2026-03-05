@@ -4,20 +4,18 @@ from datetime import datetime
 app = Flask(__name__)
 
 crowd_data = []
+THRESHOLD = 5   # change this for overcrowding level
+
 
 @app.route("/")
 def dashboard():
-    return render_template("dashboard.html", data=crowd_data)
+    return render_template("dashboard.html", data=crowd_data, threshold=THRESHOLD)
 
 
 @app.route("/update", methods=["POST"])
 def update():
 
     data = request.json
-
-    if not data:
-        return jsonify({"error": "No data received"}), 400
-
     count = data.get("count", 0)
 
     crowd_data.append({

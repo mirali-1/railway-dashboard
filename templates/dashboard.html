@@ -5,7 +5,7 @@
 
 <title>Railway Crowd Dashboard</title>
 
-<meta http-equiv="refresh" content="5">
+<meta http-equiv="refresh" content="3">
 
 <style>
 
@@ -32,6 +32,19 @@ border:1px solid #00ffcc;
 padding:10px;
 }
 
+.alert{
+color:red;
+font-size:30px;
+font-weight:bold;
+animation: blink 1s infinite;
+}
+
+@keyframes blink{
+0%{opacity:1}
+50%{opacity:0}
+100%{opacity:1}
+}
+
 </style>
 
 </head>
@@ -39,6 +52,18 @@ padding:10px;
 <body>
 
 <h1>🚆 Smart Railway Crowd Analytics</h1>
+
+{% if data and data[-1]["count"] > threshold %}
+
+<div class="alert">
+🚨 OVERCROWDED PLATFORM 🚨
+</div>
+
+<audio autoplay>
+<source src="https://www.soundjay.com/buttons/beep-07.wav">
+</audio>
+
+{% endif %}
 
 <table>
 
