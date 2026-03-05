@@ -4,12 +4,12 @@ from datetime import datetime
 app = Flask(__name__)
 
 crowd_data = []
-THRESHOLD = 1   # change this for overcrowding level
+THRESHOLD = 5
 
 
 @app.route("/")
 def dashboard():
-    return render_template("dashboard.html", data=crowd_data, threshold=THRESHOLD)
+    return render_template("dashboard.html", threshold=THRESHOLD)
 
 
 @app.route("/update", methods=["POST"])
@@ -27,6 +27,11 @@ def update():
         crowd_data.pop(0)
 
     return jsonify({"status": "received"})
+
+
+@app.route("/data")
+def data():
+    return jsonify(crowd_data)
 
 
 if __name__ == "__main__":

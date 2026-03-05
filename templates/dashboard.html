@@ -5,7 +5,7 @@
 
 <title>Railway Crowd Dashboard</title>
 
-<meta http-equiv="refresh" content="3">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 
@@ -20,16 +20,8 @@ h1{
 color:#00ffcc;
 }
 
-table{
-margin:auto;
-margin-top:30px;
-border-collapse:collapse;
-width:60%;
-}
-
-th,td{
-border:1px solid #00ffcc;
-padding:10px;
+canvas{
+margin-top:40px;
 }
 
 .alert{
@@ -53,35 +45,60 @@ animation: blink 1s infinite;
 
 <h1>🚆 Smart Railway Crowd Analytics</h1>
 
-{% if data and data[-1]["count"] > threshold %}
+<div id="alert"></div>
 
-<div class="alert">
-🚨 OVERCROWDED PLATFORM 🚨
-</div>
+<canvas id="crowdChart" width="800" height="400"></canvas>
 
-<audio autoplay>
-<source src="https://www.soundjay.com/buttons/beep-07.wav">
-</audio>
+<script>
 
-{% endif %}
+const ctx = document.getElementById('crowdChart');
 
-<table>
+let chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: [],
+        datasets: [{
+            label: 'People Count',
+            data: [],
+            borderColor: '#00ffcc',
+            borderWidth: 2,
+            fill:false
+        }]
+    },
+    options:{
+        scales:{
+            y:{
+                beginAtZero:true
+            }
+        }
+    }
+});
 
-<tr>
-<th>Time</th>
-<th>People Count</th>
-</tr>
+async function updateChart(){
 
-{% for entry in data %}
+    const response = await fetch('/data');
+    const data = await response.json();
 
-<tr>
-<td>{{ entry.time }}</td>
-<td>{{ entry.count }}</td>
-</tr>
+    const times = data.map(d => d.time);
+    const counts = data.map(d => d.count);
 
-{% endfor %}
+    chart.data.labels = times;
+    chart.data.datasets[0].data = counts;
 
-</table>
+    chart.update();
+
+    if(counts.length > 0 && counts[counts.length-1] > 5){
+        document.getElementById("alert").innerHTML =
+        '<div class="alert">🚨 OVERCROWDED PLATFORM 🚨</div>';
+    } else {
+        document.getElementById("alert").innerHTML = "";
+    }
+
+}
+
+setInterval(updateChart,2000);
+
+</script>
 
 </body>
 </html>
