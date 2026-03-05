@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Railway Crowd Dashboard</title>
+
+<meta http-equiv="refresh" content="5">
+
+<style>
+
+body{
+background:#111;
+color:white;
+text-align:center;
+font-family:Arial;
+}
+
+h1{
+color:#00ffcc;
+}
+
+table{
+margin:auto;
+margin-top:30px;
+border-collapse:collapse;
+width:60%;
+}
+
+th,td{
+border:1px solid #00ffcc;
+padding:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🚆 Smart Railway Crowd Analytics</h1>
+
+<table>
+
+<tr>
+<th>Time</th>
+<th>People Count</th>
+</tr>
+
+{% for entry in data %}
+
+<tr>
+<td>{{ entry.time }}</td>
+<td>{{ entry.count }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+</html>
