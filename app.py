@@ -4,7 +4,7 @@ from datetime import datetime
 app = Flask(__name__)
 
 crowd_data = []
-THRESHOLD = 5   # change this for overcrowding level
+THRESHOLD = 1   # change this for overcrowding level
 
 
 @app.route("/")
